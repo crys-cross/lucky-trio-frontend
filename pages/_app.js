@@ -1,5 +1,7 @@
 import Head from "next/head"
 import "../styles/globals.css"
+import { MoralisProvider } from "react-moralis"
+import { NotificationProvider } from "@web3uikit/web3"
 
 function MyApp({ Component, pageProps }) {
     return (
@@ -9,9 +11,8 @@ function MyApp({ Component, pageProps }) {
                 <meta name="description" content="Decentralized Lottery" />
                 <link rel="icon" href="/favicon.ico" />
             </Head>
-            <MoralisProvider moralisAuth={false}>
+            <MoralisProvider initializeOnMount={false}>
                 <NotificationProvider>
-                    <Header />
                     <Component {...pageProps} />
                 </NotificationProvider>
             </MoralisProvider>
