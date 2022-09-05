@@ -16,6 +16,7 @@ const Mint = () => {
     const lotteryAddress =
         chainId in networkAddresses ? networkAddresses[chainId]["LotteryTrio"][0] : null
     console.log(`Working with contract address: ${lotteryAddress}`)
+    const [entryStatus, setEntryStatus] = useState()
     const [entranceFee, setEntranceFee] = useState()
     const [recentWinner, setRecentWinner] = useState()
     const [recentWinningNumber, setRecentWinningNumber] = useState()
@@ -30,7 +31,7 @@ const Mint = () => {
         abi: luckyTrioAbi,
         contractAddress: lotteryAddress,
         functionName: "enterLottery",
-        params: { input },
+        params: {},
         msgValue: entranceFee,
     })
 
@@ -42,28 +43,28 @@ const Mint = () => {
     })
 
     const { runContractFunction: getLotteryState } = useWeb3Contract({
-        abi: pokemonNftabi,
+        abi: luckyTrioAbi,
         contractAddress: lotteryAddress,
         functionName: "getLotteryState",
         params: {},
     })
 
     const { runContractFunction: getRecentWinner } = useWeb3Contract({
-        abi: pokemonNftabi,
+        abi: luckyTrioAbi,
         contractAddress: lotteryAddress,
         functionName: "getRecentWinner",
         params: {},
     })
 
     const { runContractFunction: getRecentWinningNumber } = useWeb3Contract({
-        abi: pokemonNftabi,
+        abi: luckyTrioAbi,
         contractAddress: lotteryAddress,
         functionName: "getRecentWinningNumber",
         params: {},
     })
 
     const { runContractFunction: getNumberofPlayers } = useWeb3Contract({
-        abi: pokemonNftabi,
+        abi: luckyTrioAbi,
         contractAddress: lotteryAddress,
         functionName: "getNumberofPlayers",
         params: {},
@@ -108,8 +109,8 @@ const Mint = () => {
         <section>
             <div className="flex md:flex-row flex-col-reverse sm:py-16 py-6">
                 <h2 className="w-[100%] h-[100%] relative z-[5]">LOTTERY IMAGE HERE</h2>
-                <div className="flex-1 flex justify-center items-start flex-col">
-                    <p className="font-normal text-dimWhite text-[18px] leading-[30.8px] max-w-[470px] mt-5 px-2">
+                <div>
+                    <p>
                         To enter this Lottery draw, please click on Enter Lottery button below and
                         input your chosen three digit number.
                     </p>
@@ -140,10 +141,15 @@ const Mint = () => {
                 )}
             </div>
             <div className="flex flex-col items-center">
-                <h4>Stats</h4>
+                <h4>INFORMATION</h4>
                 <ul>
-                    <li>Entry Status: {entryStatus}</li>
-                    <li>Entrance Fee: {entranceFee}</li>
+                    <li>
+                        Entry Status:
+                        {entryStatus
+                            ? "OPEN FOR NEW ENTRIES"
+                            : "CURRENTLY CLOSED, PLEASE JOIN NEXT DRAW"}
+                    </li>
+                    <li>Entrance Fee: {ethers.utils.formatUnits(entranceFee, "ether")} ETH</li>
                     <li>Recent Winner: {recentWinner}</li>
                     <li>Recent Winning Number: {recentWinningNumber}</li>
                     <li>Number of Entries: {numberOfEntries}</li>
