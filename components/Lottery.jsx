@@ -5,6 +5,8 @@ import { useMoralis } from "react-moralis"
 import { useEffect, useState } from "react"
 import { ethers } from "ethers"
 import { useNotification } from "@web3uikit/core"
+import { Button } from "@web3uikit/core"
+
 import Image from "next/image"
 
 const Mint = () => {
@@ -13,8 +15,8 @@ const Mint = () => {
     const chainId = parseInt(chainIdHex)
     const lotteryAddress =
         chainId in networkAddresses ? networkAddresses[chainId]["LotteryTrio"][0] : null
+    console.log(`Working with contract address: ${lotteryAddress}`)
     const [entranceFee, setEntranceFee] = useState()
-    const [entryStatus, setEntryStatus] = useState()
     const [recentWinner, setRecentWinner] = useState()
     const [recentWinningNumber, setRecentWinningNumber] = useState()
     const [numberOfEntries, setNumberOfEntries] = useState()
@@ -33,7 +35,7 @@ const Mint = () => {
     })
 
     const { runContractFunction: getEntranceFee } = useWeb3Contract({
-        abi: pokemonNftabi,
+        abi: luckyTrioAbi,
         contractAddress: lotteryAddress,
         functionName: "getEntranceFee",
         params: {},
@@ -104,14 +106,16 @@ const Mint = () => {
 
     return (
         <section>
-            <div>
-                <h2>LOTTERY</h2>
-                <p>
-                    To enter this Lottery draw, please click on Enter Lottery button below and input
-                    your chosen three digit number.
-                </p>
+            <div className="flex md:flex-row flex-col-reverse sm:py-16 py-6">
+                <h2 className="w-[100%] h-[100%] relative z-[5]">LOTTERY IMAGE HERE</h2>
+                <div className="flex-1 flex justify-center items-start flex-col">
+                    <p className="font-normal text-dimWhite text-[18px] leading-[30.8px] max-w-[470px] mt-5 px-2">
+                        To enter this Lottery draw, please click on Enter Lottery button below and
+                        input your chosen three digit number.
+                    </p>
+                </div>
             </div>
-            <div>
+            <div className="flex flex-col items-center py-10">
                 {lotteryAddress ? (
                     <Button
                         onClick={async () =>
@@ -122,7 +126,8 @@ const Mint = () => {
                                 onError: (error) => console.log(error),
                             })
                         }
-                        text="Primary Button"
+                        size="xl"
+                        text="ENTER LOTTERY HERE"
                         theme="outline"
                     />
                 ) : (
@@ -134,7 +139,7 @@ const Mint = () => {
                     </div>
                 )}
             </div>
-            <div>
+            <div className="flex flex-col items-center">
                 <h4>Stats</h4>
                 <ul>
                     <li>Entry Status: {entryStatus}</li>
@@ -147,5 +152,4 @@ const Mint = () => {
         </section>
     )
 }
-
 export default Mint
