@@ -6,21 +6,24 @@ import { useEffect, useState } from "react"
 import { ethers } from "ethers"
 import { useNotification } from "@web3uikit/core"
 import { Button } from "@web3uikit/core"
+import EntranceModal from "./EntranceModal"
 
 import Image from "next/image"
 
 const Mint = () => {
     const { Moralis, isWeb3Enabled, chainId: chainIdHex } = useMoralis()
-    console.log(parseInt(chainIdHex))
     const chainId = parseInt(chainIdHex)
     const lotteryAddress =
         chainId in networkAddresses ? networkAddresses[chainId]["LotteryTrio"][0] : null
     console.log(`Working with contract address: ${lotteryAddress}`)
+    console.log(`Network Chain ID: ${parseInt(chainIdHex)}`)
     const [entryStatus, setEntryStatus] = useState()
     const [entranceFee, setEntranceFee] = useState()
     const [recentWinner, setRecentWinner] = useState()
     const [recentWinningNumber, setRecentWinningNumber] = useState()
     const [numberOfEntries, setNumberOfEntries] = useState()
+    const [showModal, setShowModal] = useState(false)
+    const hideModal = () => setShowModal(false)
     const dispatch = useNotification()
 
     const {
@@ -105,10 +108,21 @@ const Mint = () => {
         })
     }
 
+    const entryClick = () => {
+        setShowModal(true)
+    }
+
     return (
         <section>
             <div className="flex md:flex-row flex-col-reverse sm:py-16 py-6">
-                <h2 className="w-[100%] h-[100%] relative z-[5]">LOTTERY IMAGE HERE</h2>
+                <h2 className="w-[100%] h-[100%] relative z-[1]">LOTTERY IMAGE HERE</h2>
+                <EntranceModal
+                    isVisible={showModal}
+                    entranceFee={entranceFee}
+                    luckyTrioAbi={luckyTrioAbi}
+                    lotteryAddress={lotteryAddress}
+                    onClose={hideModal}
+                />
                 <div>
                     <p>
                         To enter this Lottery draw, please click on Enter Lottery button below and
@@ -119,17 +133,14 @@ const Mint = () => {
             <div className="flex flex-col items-center py-10">
                 {lotteryAddress ? (
                     <Button
-                        onClick={async () =>
-                            await enterLottery({
-                                // onComplete:
-                                // onError:
-                                onSuccess: handleSuccess,
-                                onError: (error) => console.log(error),
-                            })
-                        }
+                        onClick={entryClick}
                         size="xl"
                         text="ENTER LOTTERY HERE"
                         theme="outline"
+                        isLoading={showModal ? true : false}
+                        loadingText={
+                            <div className="animate-spin spinner-border h-8 w-8 border-b-2 rounded-full mr-4"></div>
+                        }
                     />
                 ) : (
                     <div>
@@ -144,15 +155,15 @@ const Mint = () => {
                 <h4>INFORMATION</h4>
                 <ul>
                     <li>
-                        Entry Status:
+                        Entry Status:&nbsp;
                         {entryStatus
                             ? "OPEN FOR NEW ENTRIES"
                             : "CURRENTLY CLOSED, PLEASE JOIN NEXT DRAW"}
                     </li>
-                    <li>Entrance Fee: {ethers.utils.formatUnits(entranceFee, "ether")} ETH</li>
-                    <li>Recent Winner: {recentWinner}</li>
-                    <li>Recent Winning Number: {recentWinningNumber}</li>
-                    <li>Number of Entries: {numberOfEntries}</li>
+                    <li>Entrance Fee: &nbsp;{entranceFee * 0.000000000000000001}&nbsp;ETH</li>
+                    <li>Recent Winner: &nbsp;{recentWinner}</li>
+                    <li>Recent Winning Number: &nbsp;{recentWinningNumber}</li>
+                    <li>Number of Entries: &nbsp;{numberOfEntries}</li>
                 </ul>
             </div>
         </section>
