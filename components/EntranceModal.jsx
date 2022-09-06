@@ -3,7 +3,7 @@ import { useState } from "react"
 import { useWeb3Contract } from "react-moralis"
 
 const EntranceModal = ({ isVisible, entranceFee, onClose, luckyTrioAbi, lotteryAddress }) => {
-    const [entryNumber, setEntryNumber] = useState()
+    const [playersNumber, setPlayersNumber] = useState()
     // const [entranceFee, setEntranceFee] = useState()
     const dispatch = useNotification()
 
@@ -17,7 +17,7 @@ const EntranceModal = ({ isVisible, entranceFee, onClose, luckyTrioAbi, lotteryA
             icon: "bell",
         })
         onClose && onClose()
-        setEntryNumber()
+        setPlayersNumber()
     }
 
     const {
@@ -28,7 +28,7 @@ const EntranceModal = ({ isVisible, entranceFee, onClose, luckyTrioAbi, lotteryA
         abi: luckyTrioAbi,
         contractAddress: lotteryAddress,
         functionName: "enterLottery",
-        params: { entryNumber },
+        params: { playersNumber },
         msgValue: entranceFee,
     })
 
@@ -49,7 +49,11 @@ const EntranceModal = ({ isVisible, entranceFee, onClose, luckyTrioAbi, lotteryA
                 name="Entry"
                 type="number"
                 onChange={(event) => {
-                    setEntryNumber(event.target.value)
+                    setPlayersNumber(Number(event.target.value))
+                }}
+                validation={{
+                    characterMaxLength: 3,
+                    characterMinLength: 1,
                 }}
             />
         </Modal>
