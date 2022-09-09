@@ -7,8 +7,8 @@ import { ethers } from "ethers"
 import { useNotification } from "@web3uikit/core"
 import { Button } from "@web3uikit/core"
 import EntranceModal from "./EntranceModal"
-
 import Image from "next/image"
+import luckycat from "../assets/luckycat.png"
 
 const Mint = () => {
     const { Moralis, isWeb3Enabled, chainId: chainIdHex } = useMoralis()
@@ -115,7 +115,6 @@ const Mint = () => {
     return (
         <section>
             <div className="flex md:flex-row flex-col-reverse sm:py-16 py-6">
-                <h2 className="w-[100%] h-[100%] relative z-[1]">LOTTERY IMAGE HERE</h2>
                 <EntranceModal
                     isVisible={showModal}
                     entranceFee={entranceFee}
@@ -123,8 +122,9 @@ const Mint = () => {
                     lotteryAddress={lotteryAddress}
                     onClose={hideModal}
                 />
-                <div>
-                    <p>
+                <Image src={luckycat} alt="luckycat" className="w-540px h-540px" />
+                <div className="flex-1 flex justify-center items-start flex-col">
+                    <p className="indent-5 font-medium text-[18px] leading-[30.8px] max-w-[470px] mt-5 px-2">
                         To enter this Lottery draw, please click on Enter Lottery button below and
                         input your chosen three digit number.
                     </p>
@@ -134,6 +134,7 @@ const Mint = () => {
                 {lotteryAddress ? (
                     <Button
                         onClick={entryClick}
+                        radius={40}
                         size="xl"
                         text="ENTER LOTTERY HERE"
                         theme="outline"
@@ -152,18 +153,30 @@ const Mint = () => {
                 )}
             </div>
             <div className="flex flex-col items-center">
-                <h4>INFORMATION</h4>
+                <h4 className="font-medium">INFORMATION</h4>
                 <ul>
-                    <li>
-                        Entry Status:&nbsp;
+                    <li className="flex flex-row">
+                        <div className="font-semibold">Entry Status:&nbsp;</div>
                         {entryStatus
                             ? "OPEN FOR NEW ENTRIES"
                             : "CURRENTLY CLOSED, PLEASE JOIN NEXT DRAW"}
                     </li>
-                    <li>Entrance Fee: &nbsp;{entranceFee * 0.000000000000000001}&nbsp;ETH</li>
-                    <li>Recent Winner: &nbsp;{recentWinner}</li>
-                    <li>Recent Winning Number: &nbsp;{recentWinningNumber}</li>
-                    <li>Number of Entries: &nbsp;{numberOfEntries}</li>
+                    <li className="flex flex-row">
+                        <div className="font-semibold">Entrance Fee: &nbsp;</div>
+                        {entranceFee * 0.000000000000000001}&nbsp;ETH
+                    </li>
+                    <li className="flex flex-row">
+                        <div className="font-semibold">Recent Winner: &nbsp;</div>
+                        {recentWinner}
+                    </li>
+                    <li className="flex flex-row">
+                        <div className="font-semibold">Recent Winning Number: &nbsp;</div>
+                        {recentWinningNumber}
+                    </li>
+                    <li className="flex flex-row">
+                        <div className="font-semibold">Number of Entries: &nbsp;</div>
+                        {numberOfEntries}
+                    </li>
                 </ul>
             </div>
         </section>
