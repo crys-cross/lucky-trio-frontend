@@ -6,7 +6,7 @@ import Footer from "../components/Footer"
 
 export default function Home() {
     return (
-        <div className="bg-gray-400 w-full overflow-hidden min-h-screen">
+        <div className="bg-red-300 w-full overflow-hidden min-h-screen">
             <div className={`sm:px-16 px-6 flex justify-center items-center`}>
                 <div className={`xl:max-w-[1280px] w-full`}>
                     <Header />

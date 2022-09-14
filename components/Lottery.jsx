@@ -22,6 +22,7 @@ const Mint = () => {
     const [recentWinner, setRecentWinner] = useState()
     const [recentWinningNumber, setRecentWinningNumber] = useState()
     const [numberOfEntries, setNumberOfEntries] = useState()
+    const [minutesBeforeDraw, setminutesBeforeDraw] = useState("1")
     const [showModal, setShowModal] = useState(false)
     const hideModal = () => setShowModal(false)
     const dispatch = useNotification()
@@ -73,6 +74,20 @@ const Mint = () => {
         params: {},
     })
 
+    const { runContractFunction: getMinutesBeforeNextDraw } = useWeb3Contract({
+        abi: luckyTrioAbi,
+        contractAddress: lotteryAddress,
+        functionName: "getMinutesBeforeNextDraw",
+        params: {},
+    })
+
+    const { runContractFunction: getLatestTimeStamp } = useWeb3Contract({
+        abi: luckyTrioAbi,
+        contractAddress: lotteryAddress,
+        functionName: "getLatestTimeStamp",
+        params: {},
+    })
+
     const updateUI = async () => {
         const entranceFeeFromCall = (await getEntranceFee()).toString()
         setEntranceFee(entranceFeeFromCall)
@@ -84,6 +99,8 @@ const Mint = () => {
         setRecentWinningNumber(recentWinningNumberFromCall)
         const numberOfPlayersFromCall = (await getNumberofPlayers()).toString()
         setNumberOfEntries(numberOfPlayersFromCall)
+        const minutesBeforeDrawFromCall = (await getMinutesBeforeNextDraw()).toString()
+        setminutesBeforeDraw(minutesBeforeDrawFromCall)
     }
 
     useEffect(() => {
@@ -125,8 +142,10 @@ const Mint = () => {
                 <Image src={luckycat} alt="luckycat" className="w-540px h-540px" />
                 <div className="flex-1 flex justify-center items-start flex-col">
                     <p className="indent-5 font-medium text-[18px] leading-[30.8px] max-w-[470px] mt-5 px-2">
-                        To enter this Lottery draw, please click on Enter Lottery button below and
-                        input your chosen three digit number.
+                        Welcome to LUCKY-TRIO-LOTTERY. This is a demo blockchain Lottery game where
+                        you choose 3 numbers and buy a ticket to enter the lottery. Only one player
+                        can own a specific 3 digit number. Draw is every hour. Best of luck to
+                        everyone.
                     </p>
                 </div>
             </div>
@@ -136,12 +155,16 @@ const Mint = () => {
                         onClick={entryClick}
                         radius={40}
                         size="xl"
-                        text="ENTER LOTTERY HERE"
-                        theme="outline"
+                        text="BUY TICKET HERE"
+                        theme="colored"
+                        color="red"
                         isLoading={showModal ? true : false}
                         loadingText={
                             <div className="animate-spin spinner-border h-8 w-8 border-b-2 rounded-full mr-4"></div>
                         }
+                        customize={{
+                            color: "red",
+                        }}
                     />
                 ) : (
                     <div>
@@ -155,6 +178,11 @@ const Mint = () => {
             <div className="flex flex-col items-center">
                 <h4 className="font-medium">INFORMATION</h4>
                 <ul>
+                    <li className="flex flex-row">
+                        Next Draw will be after&nbsp;
+                        <div className="font-semibold">{minutesBeforeDraw}</div>
+                        &nbsp;Minutes
+                    </li>
                     <li className="flex flex-row">
                         <div className="font-semibold">Entry Status:&nbsp;</div>
                         {entryStatus
