@@ -110,16 +110,19 @@ const Mint = () => {
     }, [isWeb3Enabled])
 
     const handleSuccess = async (tx) => {
-        await tx.wait(1)
-        handleSuccessNotification(tx)
+        const txReceipt = await tx.wait(1)
+        const event = txReceipt.events[1]
+        const value = event.args[0]
+        const address = value.toString()
+        handleSuccessNotification(number)
         updateUI()
     }
 
-    const handleSuccessNotification = () => {
+    const handleSuccessNotification = (address) => {
         dispatch({
-            type: "sucess",
-            message: "Entered Successfully",
-            title: "Tx Notification",
+            type: "success",
+            message: `${address} Entered Successfully`,
+            title: "Entry Received!",
             position: "topR",
             icon: "bell",
         })
