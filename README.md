@@ -1,4 +1,20 @@
-Image from "https://in.pinterest.com/pin/maneki-neko-lucky-cat-on-behance--82683343148004295/"
+## Dapp Link
+
+-   Link: https://wild-limit-4050.on.fleek.co/
+
+## App Info
+
+-   visit : https://github.com/crys-cross/lucky-trio-lottery/blob/main/README.md
+
+## Development
+
+-   Nextjs
+-   React Moralis
+-   Web3uikit
+
+### Credit Image
+
+-   From: "https://in.pinterest.com/pin/maneki-neko-lucky-cat-on-behance--82683343148004295/"
 
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
