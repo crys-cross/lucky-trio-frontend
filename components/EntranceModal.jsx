@@ -10,9 +10,9 @@ const EntranceModal = ({ isVisible, entranceFee, onClose, luckyTrioAbi, lotteryA
     const handleSuccess = async (tx) => {
         await tx.wait(1)
         dispatch({
-            type: "sucess",
+            type: "success",
             message: "Entry Received",
-            title: "Successfully Entered Lottery Draw",
+            title: `Successfully submitted Lottery number ${playersNumber}`,
             position: "topR",
             icon: "bell",
         })
